@@ -6,8 +6,8 @@ using real_time_notification.Services.Interface;
 namespace real_time_notification.Api.Controllers;
 
 [ApiController]
-[ApiVersion("1.0")]
 [Route("api/v{version:apiVersion}/login-users")]
+[ApiVersion("1.0")]
 public class LoginUsersController(ILoginUserService loginUserService, ILogger<LoginUsersController> logger) : ControllerBase
 {
     private readonly ILoginUserService _loginUserService = loginUserService;
@@ -26,7 +26,7 @@ public class LoginUsersController(ILoginUserService loginUserService, ILogger<Lo
                 return BadRequest("Não foi possivel realizar o cadastro");
             }
 
-            return Ok(new { result });
+            return Created();
 
         }
         catch (Exception ex)
