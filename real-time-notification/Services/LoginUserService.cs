@@ -27,7 +27,7 @@ public class LoginUserService(AppDbContext context, ILogger<LoginUserService> lo
             var user = new User
             {
                 Email = registerDTO.Email,
-                Password = registerDTO.Password,
+                Password = password,
             };
 
             await _context.Users.AddAsync(user);
@@ -44,9 +44,24 @@ public class LoginUserService(AppDbContext context, ILogger<LoginUserService> lo
     }
 
 
-    public Task<string?> LoginAsync(LoginUserDTO loginUserDTO)
+    public async Task<string?> LoginAsync(LoginUserDTO loginUserDTO)
     {
-        throw new NotImplementedException();
+        var user = await _context.Users
+            .FirstOrDefaultAsync(u => u.Email == loginUserDTO.Email);
+
+        if (user == null)
+        {
+            return null;
+        }
+
+        var senhaOk = BCrypt.Net.BCrypt.Verify(loginUserDTO.Password, user.Password);
+
+        if (!senhaOk)
+        {
+            return null;
+        }
+
+        return _tokeService.GenerateToke(user);
     }
 
 }
