@@ -8,11 +8,11 @@ using real_time_notification.Services.Interface;
 
 namespace real_time_notification.Services;
 
-public class LoginUserService(AppDbContext context, ILogger<LoginUserService> logger, TokeService tokeService) : ILoginUserService
+public class LoginUserService(AppDbContext context, ILogger<LoginUserService> logger, TokenService tokeService) : ILoginUserService
 {
     private readonly AppDbContext _context = context;
     private readonly ILogger<LoginUserService> _logger = logger;
-    private readonly TokeService _tokeService = tokeService;
+    private readonly TokenService _tokeService = tokeService;
 
 
 

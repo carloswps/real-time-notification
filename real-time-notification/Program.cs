@@ -56,7 +56,7 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJw
 });
 
 builder.Services.AddScoped<ILoginUserService, LoginUserService>();
-builder.Services.AddScoped<TokeService>();
+builder.Services.AddScoped<TokenService>();
 
 builder.Services.AddSignalR();
 
@@ -90,12 +90,6 @@ if (app.Environment.IsDevelopment())
                  description.GroupName.ToUpperInvariant());
          }
      });
-
-    /*  app.Use(async (context, next) =>
-     {
-         if (context.Request.Path == "/") { context.Response.Redirect("/swagger"); return; }
-         await next();
-     }); */
 }
 else
 {
@@ -106,5 +100,6 @@ app.UseAuthentication();
 app.UseAuthorization();
 app.UseCors("CorsPolicy");
 app.MapControllers();
+app.UseWebSockets();
 app.MapHub<NotificationHub>("/notification-hub");
 app.Run();

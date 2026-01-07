@@ -7,7 +7,7 @@ using real_time_notification.Domain.Entities;
 
 namespace real_time_notification.Application.JwtGenerate;
 
-public class TokeService(IConfiguration configuration)
+public class TokenService(IConfiguration configuration)
 {
     private readonly IConfiguration _configuration = configuration;
 

@@ -28,9 +28,7 @@
     <Folder Include="Api/Controllers/" />
     <Folder Include="Api/Hubs/" />
     <Folder Include="Api/Middlewares/" />
-    <Folder Include="Application/" />
     <Folder Include="Application/DTO/" />
-    <Folder Include="Application/JwtGenerate/" />
     <Folder Include="Domain/" />
     <Folder Include="Domain/Entities/" />
     <Folder Include="Services/Interface/" />
