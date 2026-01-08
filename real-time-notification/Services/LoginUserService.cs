@@ -8,13 +8,12 @@ using real_time_notification.Services.Interface;
 
 namespace real_time_notification.Services;
 
-public class LoginUserService(AppDbContext context, ILogger<LoginUserService> logger, TokenService tokeService) : ILoginUserService
+public class LoginUserService(AppDbContext context, ILogger<LoginUserService> logger, TokenService tokeService)
+    : ILoginUserService
 {
     private readonly AppDbContext _context = context;
     private readonly ILogger<LoginUserService> _logger = logger;
     private readonly TokenService _tokeService = tokeService;
-
-
 
     public async Task<bool> RegisterAsync(RegisterDTO registerDTO)
     {
@@ -27,14 +26,13 @@ public class LoginUserService(AppDbContext context, ILogger<LoginUserService> lo
             var user = new User
             {
                 Email = registerDTO.Email,
-                Password = password,
+                Password = password
             };
 
             await _context.Users.AddAsync(user);
             await _context.SaveChangesAsync();
 
             return true;
-
         }
         catch (Exception ex)
         {
@@ -49,19 +47,12 @@ public class LoginUserService(AppDbContext context, ILogger<LoginUserService> lo
         var user = await _context.Users
             .FirstOrDefaultAsync(u => u.Email == loginUserDTO.Email);
 
-        if (user == null)
-        {
-            return null;
-        }
+        if (user == null) return null;
 
         var senhaOk = BCrypt.Net.BCrypt.Verify(loginUserDTO.Password, user.Password);
 
-        if (!senhaOk)
-        {
-            return null;
-        }
+        if (!senhaOk) return null;
 
         return _tokeService.GenerateToke(user);
     }
-
 }

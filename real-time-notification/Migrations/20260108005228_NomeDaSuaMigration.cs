@@ -6,7 +6,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace real_time_notification.Migrations
 {
     /// <inheritdoc />
-    public partial class CreateTableUser : Migration
+    public partial class NomeDaSuaMigration : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)

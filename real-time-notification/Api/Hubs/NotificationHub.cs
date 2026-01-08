@@ -21,14 +21,14 @@ public class NotificationHub : Hub
 
     public override async Task OnConnectedAsync()
     {
-
-        if (!string.IsNullOrEmpty(UserId))
+        if (string.IsNullOrEmpty(UserId))
         {
             await base.OnConnectedAsync();
             return;
         }
 
-        _logger.LogInformation("User {UserId} connected with ConnectionId {ConnectionId}", UserId, Context.ConnectionId);
+        _logger.LogInformation("User {UserId} connected with ConnectionId {ConnectionId}", UserId,
+            Context.ConnectionId);
 
         try
         {
@@ -46,21 +46,16 @@ public class NotificationHub : Hub
 
     public override async Task OnDisconnectedAsync(Exception? exception)
     {
-
-        if (!string.IsNullOrEmpty(UserId))
+        if (string.IsNullOrEmpty(UserId))
         {
             await base.OnDisconnectedAsync(exception);
             return;
         }
 
         if (exception != null)
-        {
             _logger.LogWarning(exception, "User {UserId} disconnected with error.", UserId);
-        }
         else
-        {
             _logger.LogWarning(exception, "User {UserId} disconnected.", UserId);
-        }
 
         try
         {
