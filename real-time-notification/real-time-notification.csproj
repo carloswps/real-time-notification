@@ -24,7 +24,6 @@
 
   <ItemGroup>
     <Folder Include="Api/" />
-    <Folder Include="Api/Controllers/" />
     <Folder Include="Api/Hubs/" />
     <Folder Include="Application/DTO/" />
     <Folder Include="Domain/" />

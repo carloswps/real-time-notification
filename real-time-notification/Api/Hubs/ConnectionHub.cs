@@ -9,12 +9,12 @@ using real_time_notification.Domain.Entities;
 namespace real_time_notification.Api.Hubs;
 
 [Authorize]
-public class NotificationHub : Hub
+public class ConnectionHub : Hub
 {
-    private readonly ILogger<NotificationHub> _logger;
+    private readonly ILogger<ConnectionHub> _logger;
     private string? UserId => Context.User?.FindFirst(ClaimTypes.NameIdentifier)?.Value;
 
-    public NotificationHub(ILogger<NotificationHub> logger)
+    public ConnectionHub(ILogger<ConnectionHub> logger)
     {
         _logger = logger;
     }
@@ -71,8 +71,4 @@ public class NotificationHub : Hub
         await base.OnDisconnectedAsync(exception);
     }
 
-    public async Task SendMessage(string message)
-    {
-        await Clients.Group(UserId).SendAsync("ReceiveMessage", message);
-    }
 }

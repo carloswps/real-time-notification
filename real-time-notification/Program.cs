@@ -116,5 +116,5 @@ app.UseAuthorization();
 app.UseCors("CorsPolicy");
 app.MapControllers();
 app.UseWebSockets();
-app.MapHub<NotificationHub>("/notification-hub");
+app.MapHub<ConnectionHub>("/notification-hub");
 app.Run();
