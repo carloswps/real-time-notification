@@ -2,7 +2,7 @@ using Asp.Versioning;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using real_time_notification.Application.DTO;
-using real_time_notification.Services.Interface;
+using real_time_notification.Application.Interfaces;
 
 namespace real_time_notification.Api.Controllers;
 

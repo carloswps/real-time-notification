@@ -11,10 +11,10 @@ using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using real_time_notification.Api.Hubs;
-using real_time_notification.Commom;
+using real_time_notification.Api.Extensions;
 using real_time_notification.Infra;
-using real_time_notification.Services.Interface;
-using real_time_notification.Services;
+using real_time_notification.Application.Interfaces;
+using real_time_notification.Application.Services;
 using real_time_notification.Application.JwtGenerate;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -51,7 +51,9 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJw
         ValidateIssuerSigningKey = true,
         ValidIssuer = builder.Configuration["Jwt:Issuer"],
         ValidAudience = builder.Configuration["Jwt:Audience"],
-        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]))
+        IssuerSigningKey =
+            new SymmetricSecurityKey(
+                Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"] ?? throw new InvalidOperationException()))
     };
     options.Events = new JwtBearerEvents
     {
@@ -71,7 +73,7 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJw
 builder.Services.AddScoped<ILoginUserService, LoginUserService>();
 builder.Services.AddScoped<TokenService>();
 
-builder.Services.AddSignalR();
+builder.Services.AddSignalR(options => { options.EnableDetailedErrors = true; });
 
 builder.Services.AddCors(options =>
 {

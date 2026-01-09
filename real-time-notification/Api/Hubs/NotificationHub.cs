@@ -70,4 +70,9 @@ public class NotificationHub : Hub
 
         await base.OnDisconnectedAsync(exception);
     }
+
+    public async Task SendMessage(string message)
+    {
+        await Clients.Group(UserId).SendAsync("ReceiveMessage", message);
+    }
 }

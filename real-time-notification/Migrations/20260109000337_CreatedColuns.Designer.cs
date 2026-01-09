@@ -11,8 +11,8 @@ using real_time_notification.Infra;
 namespace real_time_notification.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20260108005228_NomeDaSuaMigration")]
-    partial class NomeDaSuaMigration
+    [Migration("20260109000337_CreatedColuns")]
+    partial class CreatedColuns
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

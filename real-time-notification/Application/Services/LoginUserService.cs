@@ -4,9 +4,9 @@ using real_time_notification.Application.DTO;
 using real_time_notification.Application.JwtGenerate;
 using real_time_notification.Domain.Entities;
 using real_time_notification.Infra;
-using real_time_notification.Services.Interface;
+using real_time_notification.Application.Interfaces;
 
-namespace real_time_notification.Services;
+namespace real_time_notification.Application.Services;
 
 public class LoginUserService(AppDbContext context, ILogger<LoginUserService> logger, TokenService tokeService)
     : ILoginUserService

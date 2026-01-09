@@ -14,7 +14,6 @@
     <PackageReference Include="BCrypt.Net-Next" Version="4.0.3" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.0" />
     <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="8.0.17" />
-    <PackageReference Include="Microsoft.AspNetCore.SignalR" Version="1.2.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.22" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.22" />
     <PackageReference Include="Npgsql" Version="8.0.8" />
@@ -31,6 +30,7 @@
     <Folder Include="Application/DTO/" />
     <Folder Include="Domain/" />
     <Folder Include="Domain/Entities/" />
+    <Folder Include="Migrations\"/>
     <Folder Include="Services/Interface/" />
   </ItemGroup>
 
