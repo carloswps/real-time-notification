@@ -26,12 +26,10 @@
     <Folder Include="Api/" />
     <Folder Include="Api/Controllers/" />
     <Folder Include="Api/Hubs/" />
-    <Folder Include="Api/Middlewares/" />
     <Folder Include="Application/DTO/" />
     <Folder Include="Domain/" />
     <Folder Include="Domain/Entities/" />
     <Folder Include="Migrations\"/>
-    <Folder Include="Services/Interface/" />
   </ItemGroup>
 
 </Project>
