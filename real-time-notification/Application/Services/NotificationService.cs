@@ -12,14 +12,19 @@ public class NotificationService(ILogger<NotificationService> logger, IHubContex
 
     public async Task SendNotificationAsync(string message, string userId, string title)
     {
+        
         try
         {
-            await _hubContext.Clients.User(userId).SendAsync("ReceiveMessage", new
+            var targetedGroup = userId.Trim();
+            _logger.LogInformation("Sending notification to {UserId}", targetedGroup);
+            await _hubContext.Clients.Group(targetedGroup).SendAsync("ReceiveMessage", new
             {
                 Title = title,
                 Message = message,
                 Timestamp = DateTime.UtcNow
             });
+
+            /*await _hubContext.Clients.All.SendAsync("ReceiveMessage", "Teste Geral");*/
         }
         catch (Exception e)
         {

@@ -1,5 +1,6 @@
 using Asp.Versioning;
 using Microsoft.AspNetCore.Mvc;
+using real_time_notification.Application.DTO;
 using real_time_notification.Application.Interfaces;
 
 namespace real_time_notification.Api.Controllers;
@@ -13,12 +14,12 @@ public class NotificationController(INotificationService notificationService, IL
     private readonly INotificationService _notificationService = notificationService;
     private readonly ILogger<NotificationController> _logger = logger;
 
-    [HttpPost("send/{userId}")]
-    public async Task<IActionResult> SendMessageAsync(string userId, [FromBody] string message)
+    [HttpPost("send-message/{userId}")]
+    public async Task<IActionResult> SendMessageAsync(string userId, [FromBody] NotificationRequest message)
     {
         try
         {
-            await _notificationService.SendNotificationAsync(userId, "Message Teste", message);
+            await _notificationService.SendNotificationAsync(userId, "Message Teste", message.Message);
             return Ok(new { message = "Mensagem enviada com sucesso" });
         }
         catch (Exception e)

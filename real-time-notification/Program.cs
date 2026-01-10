@@ -72,6 +72,7 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJw
 
 builder.Services.AddScoped<ILoginUserService, LoginUserService>();
 builder.Services.AddScoped<TokenService>();
+builder.Services.AddScoped<INotificationService, NotificationService>();
 
 builder.Services.AddSignalR(options => { options.EnableDetailedErrors = true; });
 

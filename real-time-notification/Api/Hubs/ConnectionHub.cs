@@ -27,17 +27,17 @@ public class ConnectionHub : Hub
             return;
         }
 
-        _logger.LogInformation("User {UserId} connected with ConnectionId {ConnectionId}", UserId,
+        _logger.LogInformation("User '{UserId}' connected with ConnectionId {ConnectionId}", UserId,
             Context.ConnectionId);
 
         try
         {
             await Groups.AddToGroupAsync(Context.ConnectionId, UserId);
-            _logger.LogInformation("User {UserId} added successfully to the group.", UserId);
+            _logger.LogInformation("User '{UserId}' added successfully to the group.", UserId);
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "Error in added User to the group {UserId}", UserId);
+            _logger.LogError(ex, "Error in added User to the group '{UserId}'", UserId);
             throw;
         }
 
@@ -53,18 +53,18 @@ public class ConnectionHub : Hub
         }
 
         if (exception != null)
-            _logger.LogWarning(exception, "User {UserId} disconnected with error.", UserId);
+            _logger.LogWarning(exception, "User '{UserId}' disconnected with error.", UserId);
         else
-            _logger.LogWarning(exception, "User {UserId} disconnected.", UserId);
+            _logger.LogWarning(exception, "User '{UserId}' disconnected.", UserId);
 
         try
         {
             await Groups.RemoveFromGroupAsync(Context.ConnectionId, UserId);
-            _logger.LogInformation("User {UserId} removed the group.", UserId);
+            _logger.LogInformation("User '{UserId}' removed the group.", UserId);
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "Erro removing user {UserId} from group.", UserId);
+            _logger.LogError(ex, "Erro removing user '{UserId}' from group.", UserId);
             throw;
         }
 
