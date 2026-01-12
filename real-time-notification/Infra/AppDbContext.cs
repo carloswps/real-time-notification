@@ -32,6 +32,8 @@ public class AppDbContext : DbContext
             entity.Property(e => e.Email).IsRequired().HasMaxLength(100);
             entity.HasIndex(e => e.Email).IsUnique();
             entity.Property(e => e.Password).IsRequired();
+            entity.Property(e => e.IsOnline).HasDefaultValue(false);
+            entity.Property(e => e.LastOnline).IsRequired(false);
         });
     }
 
