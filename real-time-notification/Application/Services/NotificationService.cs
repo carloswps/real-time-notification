@@ -20,15 +20,13 @@ public class NotificationService(ILogger<NotificationService> logger, IHubContex
             await _hubContext.Clients.Group(targetedGroup).SendAsync("ReceiveMessage", new
             {
                 Title = title,
-                Message = message,
-                Timestamp = DateTime.UtcNow
+                Message = message
             });
 
-            /*await _hubContext.Clients.All.SendAsync("ReceiveMessage", "Teste Geral");*/
         }
         catch (Exception e)
         {
-            _logger.LogInformation("Error in SendNotificationAsync:", e);
+            _logger.LogError("Error in SendNotificationAsync:", e);
             throw;
         }
     }

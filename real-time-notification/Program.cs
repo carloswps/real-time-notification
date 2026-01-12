@@ -12,6 +12,7 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using real_time_notification.Api.Hubs;
 using real_time_notification.Api.Extensions;
+using real_time_notification.Api.Middleware;
 using real_time_notification.Infra;
 using real_time_notification.Application.Interfaces;
 using real_time_notification.Application.Services;
@@ -53,7 +54,8 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJw
         ValidAudience = builder.Configuration["Jwt:Audience"],
         IssuerSigningKey =
             new SymmetricSecurityKey(
-                Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"] ?? throw new InvalidOperationException()))
+                Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"] ??
+                                       throw new InvalidOperationException("The key 'Jwt:Key' was not found.")))
     };
     options.Events = new JwtBearerEvents
     {
@@ -112,6 +114,7 @@ else
     app.UseHttpsRedirection();
 }
 
+app.UseMiddleware<ErrorHandlingMiddleware>();
 app.UseAuthentication();
 app.UseAuthorization();
 app.UseCors("CorsPolicy");

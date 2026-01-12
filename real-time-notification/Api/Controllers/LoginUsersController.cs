@@ -20,18 +20,9 @@ public class LoginUsersController(ILoginUserService loginUserService, ILogger<Lo
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     public async Task<IActionResult> RegisterUserAsync([FromBody] RegisterDTO registerDTO)
     {
-        try
-        {
             var result = await _loginUserService.RegisterAsync(registerDTO);
-            if (!result) return BadRequest("Não foi possivel realizar o cadastro");
-
+            if (!result) return Conflict("Registration was not possible.");
             return Ok(new { result });
-        }
-        catch (Exception ex)
-        {
-            _logger.LogError(ex, "Ocorreu um erro durante o registro do usuário.");
-            throw;
-        }
     }
 
     [HttpPost("login")]
@@ -39,17 +30,8 @@ public class LoginUsersController(ILoginUserService loginUserService, ILogger<Lo
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     public async Task<IActionResult> LoginUserAsync([FromBody] LoginUserDTO loginUserDTO)
     {
-        try
-        {
             var token = await _loginUserService.LoginAsync(loginUserDTO);
             if (token == null) return Unauthorized("Credenciais invalidas");
-
             return Ok(new { token = token, message = "Login realizado com sucesso" });
-        }
-        catch (Exception ex)
-        {
-            _logger.LogError(ex, "Ocorreu um erro durante o login do usuário.");
-            throw;
-        }
     }
 }

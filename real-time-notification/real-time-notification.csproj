@@ -23,7 +23,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Api/" />
     <Folder Include="Api/Hubs/" />
     <Folder Include="Domain/" />
     <Folder Include="Domain/Entities/" />

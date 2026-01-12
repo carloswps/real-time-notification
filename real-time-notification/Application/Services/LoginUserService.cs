@@ -36,7 +36,7 @@ public class LoginUserService(AppDbContext context, ILogger<LoginUserService> lo
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "Ocorreu um erro durante o registro do usuário.");
+            _logger.LogError(ex, "An error occurred during user registration.");
             throw;
         }
     }
@@ -44,15 +44,24 @@ public class LoginUserService(AppDbContext context, ILogger<LoginUserService> lo
 
     public async Task<string?> LoginAsync(LoginUserDTO loginUserDTO)
     {
-        var user = await _context.Users
-            .FirstOrDefaultAsync(u => u.Email == loginUserDTO.Email);
+        try
+        {
+            var user = await _context.Users
+                .FirstOrDefaultAsync(u => u.Email == loginUserDTO.Email);
 
-        if (user == null) return null;
+            if (user == null) return null;
 
-        var senhaOk = BCrypt.Net.BCrypt.Verify(loginUserDTO.Password, user.Password);
+            var senhaOk = BCrypt.Net.BCrypt.Verify(loginUserDTO.Password, user.Password);
 
-        if (!senhaOk) return null;
+            if (!senhaOk) return null;
 
-        return _tokeService.GenerateToke(user);
+            return _tokeService.GenerateToke(user);
+        }
+        catch (Exception e)
+        {
+            _logger.LogError(e, "An error occurred during user login.");
+            throw;
+        }
+        
     }
 }
