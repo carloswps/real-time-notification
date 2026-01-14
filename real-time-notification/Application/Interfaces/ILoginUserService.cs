@@ -5,6 +5,6 @@ namespace real_time_notification.Application.Interfaces;
 
 public interface ILoginUserService
 {
-    Task<String?> LoginAsync(LoginUserDTO loginUserDTO);
-    Task<bool> RegisterAsync(RegisterDTO registerDTO);
+    Task<string?> LoginAsync(LoginUserDto loginUserDTO);
+    Task<bool> RegisterAsync(RegisterDto registerDTO);
 }

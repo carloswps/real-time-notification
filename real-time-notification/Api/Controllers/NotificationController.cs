@@ -17,9 +17,16 @@ public class NotificationController(INotificationService notificationService, IL
     private readonly ILogger<NotificationController> _logger = logger;
 
     [HttpPost("send-message/{userId}")]
-    public async Task<IActionResult> SendMessageAsync(string userId, [FromBody] NotificationRequest message)
+    public async Task<IActionResult> SendMessageAsync(string userId, [FromBody] NotificationRequestDto message)
     {
         await _notificationService.SendNotificationAsync(message.Message, userId, message.Tittle);
         return Ok(new { message = "Message sent successfully." });
+    }
+
+    [HttpGet("get-user-status/{userId}")]
+    public async Task<IActionResult> GetUserStatus(int userId)
+    {
+        await _notificationService.GetUserStatus(userId);
+        return Ok(new { message = "User status retrieved successfully." });
     }
 }

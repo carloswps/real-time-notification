@@ -15,7 +15,7 @@ public class LoginUserService(AppDbContext context, ILogger<LoginUserService> lo
     private readonly ILogger<LoginUserService> _logger = logger;
     private readonly TokenService _tokeService = tokeService;
 
-    public async Task<bool> RegisterAsync(RegisterDTO registerDTO)
+    public async Task<bool> RegisterAsync(RegisterDto registerDTO)
     {
         try
         {
@@ -42,7 +42,7 @@ public class LoginUserService(AppDbContext context, ILogger<LoginUserService> lo
     }
 
 
-    public async Task<string?> LoginAsync(LoginUserDTO loginUserDTO)
+    public async Task<string?> LoginAsync(LoginUserDto loginUserDTO)
     {
         try
         {

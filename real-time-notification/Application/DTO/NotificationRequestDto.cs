@@ -2,7 +2,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace real_time_notification.Application.DTO;
 
-public class NotificationRequest
+public class NotificationRequestDto
 {
     [Required] public string Message { get; set; } = "";
 

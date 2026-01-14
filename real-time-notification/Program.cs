@@ -10,6 +10,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using real_time_notification.Api.BackgroundServices;
 using real_time_notification.Api.Hubs;
 using real_time_notification.Api.Extensions;
 using real_time_notification.Api.Middleware;
@@ -76,8 +77,14 @@ builder.Services.AddScoped<ILoginUserService, LoginUserService>();
 builder.Services.AddScoped<TokenService>();
 builder.Services.AddScoped<INotificationService, NotificationService>();
 builder.Services.AddScoped<IPresenceService, PresenceService>();
+builder.Services.AddHostedService<PresenceWorker>();
 
-builder.Services.AddSignalR(options => { options.EnableDetailedErrors = true; });
+builder.Services.AddSignalR(options =>
+{
+    options.EnableDetailedErrors = true;
+    options.KeepAliveInterval = TimeSpan.FromSeconds(15);
+    options.ClientTimeoutInterval = TimeSpan.FromSeconds(30);
+});
 
 builder.Services.AddCors(options =>
 {

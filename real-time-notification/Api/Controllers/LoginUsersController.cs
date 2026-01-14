@@ -18,7 +18,7 @@ public class LoginUsersController(ILoginUserService loginUserService, ILogger<Lo
     [HttpPost("register")]
     [ProducesResponseType(StatusCodes.Status201Created)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-    public async Task<IActionResult> RegisterUserAsync([FromBody] RegisterDTO registerDTO)
+    public async Task<IActionResult> RegisterUserAsync([FromBody] RegisterDto registerDTO)
     {
             var result = await _loginUserService.RegisterAsync(registerDTO);
             if (!result) return Conflict("Registration was not possible.");
@@ -28,7 +28,7 @@ public class LoginUsersController(ILoginUserService loginUserService, ILogger<Lo
     [HttpPost("login")]
     [ProducesResponseType(StatusCodes.Status201Created)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-    public async Task<IActionResult> LoginUserAsync([FromBody] LoginUserDTO loginUserDTO)
+    public async Task<IActionResult> LoginUserAsync([FromBody] LoginUserDto loginUserDTO)
     {
             var token = await _loginUserService.LoginAsync(loginUserDTO);
             if (token == null) return Unauthorized("Credenciais invalidas");

@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace real_time_notification.Application.DTO;
 
-public class RegisterDTO
+public class RegisterDto
 {
     [Required] public string Email { get; set; } = "";
 
