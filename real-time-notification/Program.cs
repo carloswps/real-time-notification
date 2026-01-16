@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Mvc;
 using Asp.Versioning;
 using Asp.Versioning.ApiExplorer;
+using Microsoft.AspNetCore.SignalR;
 using Microsoft.CodeAnalysis.Options;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
@@ -13,6 +14,7 @@ using Microsoft.OpenApi.Models;
 using real_time_notification.Api.BackgroundServices;
 using real_time_notification.Api.Hubs;
 using real_time_notification.Api.Extensions;
+using real_time_notification.Api.Hubs.Filters;
 using real_time_notification.Api.Middleware;
 using real_time_notification.Infra;
 using real_time_notification.Application.Interfaces;
@@ -78,12 +80,16 @@ builder.Services.AddScoped<TokenService>();
 builder.Services.AddScoped<INotificationService, NotificationService>();
 builder.Services.AddScoped<IPresenceService, PresenceService>();
 builder.Services.AddHostedService<PresenceWorker>();
+builder.Services.AddSingleton<HubErrorFilter>();
 
 builder.Services.AddSignalR(options =>
 {
     options.EnableDetailedErrors = true;
     options.KeepAliveInterval = TimeSpan.FromSeconds(15);
     options.ClientTimeoutInterval = TimeSpan.FromSeconds(30);
+    options.MaximumReceiveMessageSize = 32;
+    options.StatefulReconnectBufferSize = 1024;
+    options.AddFilter<HubErrorFilter>();
 });
 
 builder.Services.AddCors(options =>

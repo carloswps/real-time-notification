@@ -8,12 +8,13 @@ public class PresenceWorker(IServiceProvider serviceProvider, ILogger<PresenceWo
     private readonly ILogger<PresenceWorker> _logger = logger;
     private readonly IServiceProvider _serviceProvider = serviceProvider;
 
-    private readonly TimeSpan _checkInterval = TimeSpan.FromSeconds(2);
+    private readonly TimeSpan _checkInterval = TimeSpan.FromSeconds(30);
 
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
         _logger.LogInformation("Presence worker service is started.");
         while (!stoppingToken.IsCancellationRequested)
+        {
             try
             {
                 using (var scope = _serviceProvider.CreateScope())
@@ -36,11 +37,18 @@ public class PresenceWorker(IServiceProvider serviceProvider, ILogger<PresenceWo
                     }
                 }
             }
+            catch (OperationCanceledException)
+            {
+                _logger.LogInformation("Presence worker service is stopping.");
+                break;
+            }
             catch (Exception e)
             {
                 _logger.LogError(e, "Error in presence worker service.");
             }
 
-        await Task.Delay(_checkInterval, stoppingToken);
+            await Task.Delay(_checkInterval, stoppingToken);
+        }
+            
     }
 }
