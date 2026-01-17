@@ -4,4 +4,5 @@ public class UserStatusDto
 {
     public bool IsOnline { get; set; }
     public DateTime? LastOnline { get; set; }
+    public int Id { get; set; }
 }

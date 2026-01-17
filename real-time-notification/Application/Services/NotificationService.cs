@@ -45,7 +45,7 @@ public class NotificationService(
         {
             var userStatus = await _context.Users
                 .Where(u => u.Id == userId)
-                .Select(u => new UserStatusDto { IsOnline = u.IsOnline, LastOnline = u.LastOnline })
+                .Select(u => new UserStatusDto { IsOnline = u.IsOnline, LastOnline = u.LastOnline, Id = u.Id })
                 .FirstOrDefaultAsync();
 
             return userStatus;

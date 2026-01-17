@@ -87,7 +87,6 @@ builder.Services.AddSignalR(options =>
     options.EnableDetailedErrors = true;
     options.KeepAliveInterval = TimeSpan.FromSeconds(15);
     options.ClientTimeoutInterval = TimeSpan.FromSeconds(30);
-    options.MaximumReceiveMessageSize = 32;
     options.StatefulReconnectBufferSize = 1024;
     options.AddFilter<HubErrorFilter>();
 });

@@ -26,7 +26,9 @@ public class NotificationController(INotificationService notificationService, IL
     [HttpGet("get-user-status/{userId}")]
     public async Task<IActionResult> GetUserStatus(int userId)
     {
-        await _notificationService.GetUserStatus(userId);
-        return Ok(new { message = "User status retrieved successfully." });
+        var userStatus = await _notificationService.GetUserStatus(userId);
+
+        if (userStatus == null) return NotFound("User not found.");
+        return Ok(userStatus);
     }
 }
