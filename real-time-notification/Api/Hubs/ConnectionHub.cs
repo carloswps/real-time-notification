@@ -13,7 +13,9 @@ namespace real_time_notification.Api.Hubs;
 public class ConnectionHub : Hub
 {
     private readonly ILogger<ConnectionHub> _logger;
-    private string? UserIdString => Context.User?.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+    private int UserId => int.Parse(Context.User?.FindFirst(ClaimTypes.NameIdentifier)?.Value ?? "0");
+    private string? UserIdString => UserId.ToString();
     private readonly IPresenceService _presenceService;
 
     public ConnectionHub(ILogger<ConnectionHub> logger, IPresenceService presenceService)
@@ -24,7 +26,14 @@ public class ConnectionHub : Hub
 
     public override async Task OnConnectedAsync()
     {
-        if (string.IsNullOrEmpty(UserIdString) || !int.TryParse(UserIdString, out var userID))
+        var userID = UserId;
+        if (userID == 0)
+        {
+            _logger.LogWarning("User not authenticated.");
+            return;
+        }
+
+        if (string.IsNullOrEmpty(UserIdString))
         {
             await base.OnConnectedAsync();
             return;
@@ -51,31 +60,57 @@ public class ConnectionHub : Hub
 
     public override async Task OnDisconnectedAsync(Exception? exception)
     {
-        if (string.IsNullOrEmpty(UserIdString) || !int.TryParse(UserIdString, out var userID))
+        var userID = UserId;
+        if (userID != 0)
         {
-            await base.OnDisconnectedAsync(exception);
-            return;
+            try
+            {
+                await _presenceService.UpdateUserStatus(userID, false);
+                await Clients.Others.SendAsync("UpdateUserStatus", new { UserId = UserIdString, IsOnline = false });
+                _logger.LogInformation("User '{UserId}' removed the group.", UserIdString);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Erro removing user '{UserId}' from group.", UserIdString);
+                throw;
+            }
         }
-
-        if (exception != null)
-            _logger.LogWarning(exception, "User '{UserId}' disconnected with error.", UserIdString);
-        else
-            _logger.LogWarning(exception, "User '{UserId}' disconnected.", UserIdString);
-
-        try
-        {
-            await Groups.RemoveFromGroupAsync(Context.ConnectionId, UserIdString);
-            await _presenceService.UpdateUserStatus(userID, false);
-            await Clients.Others.SendAsync("UpdateUserStatus", new { UserId = UserIdString, IsOnline = false });
-            _logger.LogInformation("User '{UserId}' removed the group.", UserIdString);
-        }
-        catch (Exception ex)
-        {
-            _logger.LogError(ex, "Erro removing user '{UserId}' from group.", UserIdString);
-            throw;
-        }
-
+            
+        
         await base.OnDisconnectedAsync(exception);
     }
 
+    public async Task JoinPrivateChat(int targetUserId)
+    {
+        if (UserId == 0)
+        {
+            _logger.LogWarning("User not authenticated.");
+            return;
+        }
+
+        var roomId = GetRoom(UserId, targetUserId);
+        await Groups.AddToGroupAsync(Context.ConnectionId, roomId);
+    }
+
+    public async Task SendMessage(int targetUserId, string message)
+    {
+        if (UserId == 0)
+        {
+            _logger.LogWarning("User not authenticated.");
+            return;
+        }
+
+        var roomId = GetRoom(UserId, targetUserId);
+        await Clients.Group(roomId).SendAsync("ReceivePrivateMessage", new
+        {
+            SenderId = UserId,
+            Content = message,
+            Timestamp = DateTime.Now.Hour
+        });
+    }
+
+    private string GetRoom(int id1, int id2)
+    {
+        return id1 < id2 ? $"chat_{id1}_{id2}" : $"chat_{id2}_{id1}";
+    }
 }
